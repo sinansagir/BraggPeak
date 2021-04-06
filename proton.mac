@@ -7,10 +7,10 @@
 /run/particle/dumpList
 #
 # set geometry 
-/protonPB/det/setSizeX  4 cm
-/protonPB/det/setSizeYZ 4 cm
-/protonPB/det/setSliceSizeYZ 4 cm
-/protonPB/det/sliceNumber 50 
+/protonPIC/det/setSizeX  4 cm
+/protonPIC/det/setSizeYZ 4 cm
+/protonPIC/det/setSliceSizeYZ 4 cm
+/protonPIC/det/sliceNumber 50 
 #
 # define longitudinal scoring mesh
 # along the beam
@@ -33,16 +33,16 @@
 /score/close
 #
 # set physics process
-/protonPB/phys/addPhysics QGSP_BIC_EMY
-#/protonPB/phys/addPhysics emlivermore
-#/protonPB/phys/addPhysics empenelope
+/protonPIC/phys/addPhysics QGSP_BIC_EMY
+#/protonPIC/phys/addPhysics emlivermore
+#/protonPIC/phys/addPhysics empenelope
 #
 # production tresholds (recommended range 
 #cut off not bigger than 10% of slice thickness)
-/protonPB/phys/setCuts 0.2 mm
-#/protonPB/phys/setGCut 1 um
-#/protonPB/phys/setECut 1 um
-#/protonPB/phys/setPCut 1 um
+/protonPIC/phys/setCuts 0.2 mm
+#/protonPIC/phys/setGCut 1 um
+#/protonPIC/phys/setECut 1 um
+#/protonPIC/phys/setPCut 1 um
 #
 # initialize
 /run/initialize
@@ -59,9 +59,9 @@
 #
 # step limit (recommended not bigger than 5% of 
 # slice thickness)
-/protonPB/stepMax 0.1 mm
+/protonPIC/stepMax 0.1 mm
 #
-/protonPB/event/printModulo 50
+/protonPIC/event/printModulo 50
 #
 # output file
 /analysis/setFileName Proton

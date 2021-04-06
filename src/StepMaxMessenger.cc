@@ -32,7 +32,7 @@
 StepMaxMessenger::StepMaxMessenger(StepMax* stepM)
 :G4UImessenger(),fStepMax(stepM),fStepMaxCmd(0)
 { 
-  fStepMaxCmd = new G4UIcmdWithADoubleAndUnit("/protonPB/stepMax",this);
+  fStepMaxCmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/stepMax",this);
   fStepMaxCmd->SetGuidance("Set max allowed step length");
   fStepMaxCmd->SetParameterName("mxStep",false);
   fStepMaxCmd->SetRange("mxStep>0.");

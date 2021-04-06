@@ -36,10 +36,10 @@ PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
  fGunDir(0),         
  fRndmCmd(0)
 { 
-  fGunDir = new G4UIdirectory("/protonPB/gun/");
+  fGunDir = new G4UIdirectory("/protonPIC/gun/");
   fGunDir->SetGuidance("gun control");
 
-  fRndmCmd = new G4UIcmdWithADoubleAndUnit("/protonPB/gun/rndm",this);
+  fRndmCmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/rndm",this);
   fRndmCmd->SetGuidance("random lateral extension on the beam");
   fRndmCmd->SetParameterName("rBeam",false);
   fRndmCmd->SetRange("rBeam>=0.");
