@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/src/DetectorMessenger.cc
-
+    
 #include "DetectorMessenger.hh"
 #include "DetectorConstruction.hh"
 #include "G4UIdirectory.hh"
@@ -45,40 +45,40 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
  fLayerNumberCmd(0),          
  fUpdateCmd(0)
 { 
-  fTestemDir = new G4UIdirectory("/protonPB/");
+  fTestemDir = new G4UIdirectory("/protonGB/");
   fTestemDir->SetGuidance(" detector control.");
   
-  fDetDir = new G4UIdirectory("/protonPB/det/");
+  fDetDir = new G4UIdirectory("/protonGB/det/");
   fDetDir->SetGuidance("detector construction commands");
         
-  fSizeXCmd = new G4UIcmdWithADoubleAndUnit("/protonPB/det/setSizeX",this);
+  fSizeXCmd = new G4UIcmdWithADoubleAndUnit("/protonGB/det/setSizeX",this);
   fSizeXCmd->SetGuidance("Set sizeX of the absorber");
   fSizeXCmd->SetParameterName("SizeX",false);
   fSizeXCmd->SetRange("SizeX>0.");
   fSizeXCmd->SetUnitCategory("Length");
   fSizeXCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
   
-  fSizeYZCmd = new G4UIcmdWithADoubleAndUnit("/protonPB/det/setSizeYZ",this);
+  fSizeYZCmd = new G4UIcmdWithADoubleAndUnit("/protonGB/det/setSizeYZ",this);
   fSizeYZCmd->SetGuidance("Set sizeYZ of the absorber");
   fSizeYZCmd->SetParameterName("SizeYZ",false);
   fSizeYZCmd->SetRange("SizeYZ>0.");
   fSizeYZCmd->SetUnitCategory("Length");
   fSizeYZCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
                 
-  fLayerSizeYZCmd = new G4UIcmdWithADoubleAndUnit("/protonPB/det/setSliceSizeYZ",this);
+  fLayerSizeYZCmd = new G4UIcmdWithADoubleAndUnit("/protonGB/det/setSliceSizeYZ",this);
   fLayerSizeYZCmd->SetGuidance("Set LayersizeYZ of the absorber");
   fLayerSizeYZCmd->SetParameterName("LayerSizeYZ",false);
   fLayerSizeYZCmd->SetRange("LayerSizeYZ>0.");
   fLayerSizeYZCmd->SetUnitCategory("Length");
   fLayerSizeYZCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
-  fLayerNumberCmd = new G4UIcmdWithAnInteger("/protonPB/det/sliceNumber",this);
+  fLayerNumberCmd = new G4UIcmdWithAnInteger("/protonGB/det/sliceNumber",this);
   fLayerNumberCmd->SetGuidance("Set number of fLayers.");
   fLayerNumberCmd->SetParameterName("layerNb",false);
   fLayerNumberCmd->SetRange("layerNb>=0");
   fLayerNumberCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
-  fUpdateCmd = new G4UIcmdWithoutParameter("/protonPB/det/update",this);
+  fUpdateCmd = new G4UIcmdWithoutParameter("/protonGB/det/update",this);
   fUpdateCmd->SetGuidance("Update calorimeter geometry.");
   fUpdateCmd->SetGuidance("This command MUST be applied before \"beamOn\" ");
   fUpdateCmd->SetGuidance("if you changed geometrical value(s).");

@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/include/PrimaryGeneratorAction.hh
-
+     
 #ifndef PrimaryGeneratorAction_h
 #define PrimaryGeneratorAction_h 1
 
@@ -32,9 +32,9 @@
 #include "G4ParticleGun.hh"
 #include "globals.hh"
 
+class G4GeneralParticleSource;
 class G4Event;
 class DetectorConstruction;
-class PrimaryGeneratorMessenger;
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
@@ -42,21 +42,20 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     PrimaryGeneratorAction(DetectorConstruction*);    
    ~PrimaryGeneratorAction();
 
-  public:  
-    void SetRndmBeam(G4double val)  {fRndmBeam = val;}   
+  public:
+
     virtual void GeneratePrimaries(G4Event*);
-    
+
     void   ResetEbeamCumul() {fEbeamCumul = 0.;}
     G4double GetEbeamCumul() {return fEbeamCumul;}
-     
-    G4ParticleGun* GetParticleGun() {return fParticleGun;}
-    
+   
   private:
-    G4ParticleGun*             fParticleGun;
-    DetectorConstruction*      fDetector;
-    G4double                   fRndmBeam;
-    G4double                   fEbeamCumul;       
-    PrimaryGeneratorMessenger* fGunMessenger;     
+
+    void SetDefaultPrimaryParticle();
+
+    G4GeneralParticleSource*   fParticleGun;
+    DetectorConstruction*      fDetector;    
+    G4double                   fEbeamCumul;      
 };
 
 #endif

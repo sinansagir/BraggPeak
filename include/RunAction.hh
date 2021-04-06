@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/include/RunAction.hh
-
+   
 #ifndef RunAction_h
 #define RunAction_h 1
 
@@ -36,7 +36,6 @@
 class DetectorConstruction;
 class PhysicsList;
 class PrimaryGeneratorAction;
-
 class G4Run;
 
 class RunAction : public G4UserRunAction

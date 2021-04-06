@@ -24,8 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/src/DetectorConstruction.cc
-
-
+   
 #include "DetectorConstruction.hh"
 #include "DetectorMessenger.hh"
 
@@ -60,7 +59,7 @@ DetectorConstruction::DetectorConstruction()
   fWorldSizeX = fWorldSizeYZ = 1.2*fAbsorSizeX;
 
   fLayerSizeYZ = 2*cm;
-  fLayerNumber = 0;
+  fLayerNumber = 1;
   fLayerSizeX = 0*cm;
   fLayerMass = 0;
   

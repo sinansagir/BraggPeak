@@ -37,10 +37,10 @@ EventActionMessenger::EventActionMessenger(EventAction* EvAct)
  fDrawCmd(0),
  fPrintCmd(0)
 {
-  fEventDir = new G4UIdirectory("/protonPB/event/");
+  fEventDir = new G4UIdirectory("/protonGB/event/");
   fEventDir->SetGuidance("event control");
  
-  fDrawCmd = new G4UIcmdWithAString("/protonPB/event/drawTracks",this);
+  fDrawCmd = new G4UIcmdWithAString("/protonGB/event/drawTracks",this);
   fDrawCmd->SetGuidance("Draw the tracks in the event");
   fDrawCmd->SetGuidance("  Choice : none,charged, all");
   fDrawCmd->SetParameterName("choice",true);
@@ -48,7 +48,7 @@ EventActionMessenger::EventActionMessenger(EventAction* EvAct)
   fDrawCmd->SetCandidates("none charged all");
   fDrawCmd->AvailableForStates(G4State_Idle);
   
-  fPrintCmd = new G4UIcmdWithAnInteger("/protonPB/event/printModulo",this);
+  fPrintCmd = new G4UIcmdWithAnInteger("/protonGB/event/printModulo",this);
   fPrintCmd->SetGuidance("Print events modulo n");
   fPrintCmd->SetParameterName("EventNb",false);
   fPrintCmd->SetRange("EventNb>0");
