@@ -49,6 +49,17 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(DetectorConstruction* det)
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleEnergy(160*MeV);  
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
+  //fParticleGun->SetParticlePosition(G4ThreeVector(-2.*cm,0.,0.));
+
+  fBeamSourceFile = new TFile("/home/ssagir/Data/Geant4input_QED_L_7um_proton_19.root");
+  fBeamSourceReader.SetTree("ana",fBeamSourceFile);
+  TTreeReaderValue<Double_t> theKE(fBeamSourceReader, "b_KE");
+  TTreeReaderValue<Int_t>    theNp(fBeamSourceReader, "b_Np");
+  TTreeReaderValue<Double_t> thePx(fBeamSourceReader, "b_px");
+  TTreeReaderValue<Double_t> thePy(fBeamSourceReader, "b_py");
+  TTreeReaderValue<Double_t> thePz(fBeamSourceReader, "b_pz");
+  nentries = fBeamSourceReader.GetEntries();
+  fBeamSourceReader.SetEntry(1);
     
   //create a messenger for this class
   fGunMessenger = new PrimaryGeneratorMessenger(this);  
@@ -62,22 +73,58 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  //this function is called at the begining of event
-  G4double x0 = -0.5*(fDetector->GetAbsorSizeX());
-  G4double y0 = 0.*cm, z0 = 0.*cm;
-    
-  //randomize the beam, if requested.
-  if (fRndmBeam > 0.) 
-    {
-      if (fRndmBeam > fDetector->GetAbsorSizeYZ())
-        fRndmBeam = fDetector->GetAbsorSizeYZ(); 
-      G4double rbeam = 0.5*fRndmBeam;
-      y0 = (2*G4UniformRand()-1.)*rbeam;
-      z0 = (2*G4UniformRand()-1.)*rbeam;
-    }
-  fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));  
+  // Generate kinetic energy and momentum
+  fBeamSourceReader.Restart();
+  fBeamSourceReader.SetTree("ana",fBeamSourceFile);
+  TTreeReaderValue<Double_t> theKE(fBeamSourceReader, "b_KE");
+  TTreeReaderValue<Int_t>    theNp(fBeamSourceReader, "b_Np");
+  TTreeReaderValue<Double_t> thePx(fBeamSourceReader, "b_px");
+  TTreeReaderValue<Double_t> thePy(fBeamSourceReader, "b_py");
+  TTreeReaderValue<Double_t> thePz(fBeamSourceReader, "b_pz");
+  TRandom3 rand(0);
+  Long64_t coin = rand.Uniform(0,nentries);
+  fBeamSourceReader.SetEntry(coin);
+//   while (1) {
+//   	if (*theKE < 60. || *theKE > 65.) {
+//   		coin = rand.Uniform(0,nentries);
+//   		fBeamSourceReader.SetEntry(coin);
+//   	} else {
+//   		break;
+//   	}
+//   }
+//   auto parVec = G4ThreeVector(*thePx, *thePy, *thePz).unit();
+//   auto xVec = G4ThreeVector(1, 0, 0).unit();
+//   while (1) {
+//   	parVec = G4ThreeVector(*thePx, *thePy, *thePz).unit();
+//   	if (!parVec.isParallel(xVec,0.01)) {
+//   		coin = rand.Uniform(0,nentries);
+//   		fBeamSourceReader.SetEntry(coin);
+//   	} else {
+//   		break;
+//   	}
+//   }
+  auto ke = *theKE;
+  auto np = *theNp;
+  auto px = *thePx; //Epoch laser beam is in x-direction=!
+  auto py = *thePy;
+  auto pz = *thePz;
+  auto parVec = G4ThreeVector(px, py, pz).unit();
+  //auto parVec = G4ThreeVector(1, 0, 0).unit();
+  //ke = 62
+
+  fParticleGun->SetNumberOfParticles(np);
+  fParticleGun->SetParticleMomentumDirection(parVec);
+  fParticleGun->SetParticleEnergy(ke * MeV);
   fParticleGun->GeneratePrimaryVertex(anEvent);
   
+  //std::cout<<"Coin:"<<coin;
+  //std::cout<<", ke:"<<ke;
+  //std::cout<<", px:"<<parVec.x();
+  //std::cout<<", py:"<<parVec.y();
+  //std::cout<<", pz:"<<parVec.z()<<std::endl;
+  //std::cout<<"Nparticles:"<<fParticleGun->GetNumberOfParticles()<<std::endl;
+  //std::cout<<"Momentum:"<<fParticleGun->GetParticleMomentum()<<std::endl;
+
   fEbeamCumul += fParticleGun->GetParticleEnergy(); 
 }
 

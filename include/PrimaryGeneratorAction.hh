@@ -32,6 +32,13 @@
 #include "G4ParticleGun.hh"
 #include "globals.hh"
 
+#include "TFile.h"
+#include "TTree.h"
+#include "TRandom3.h"
+#include "vector"
+#include "TTreeReader.h"
+#include "TTreeReaderValue.h"
+
 class G4Event;
 class DetectorConstruction;
 class PrimaryGeneratorMessenger;
@@ -50,13 +57,18 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4double GetEbeamCumul() {return fEbeamCumul;}
      
     G4ParticleGun* GetParticleGun() {return fParticleGun;}
+
+    G4int nentries;
+    TTreeReader fBeamSourceReader;
     
   private:
     G4ParticleGun*             fParticleGun;
     DetectorConstruction*      fDetector;
     G4double                   fRndmBeam;
     G4double                   fEbeamCumul;       
-    PrimaryGeneratorMessenger* fGunMessenger;     
+    PrimaryGeneratorMessenger* fGunMessenger; 
+    
+    TFile *fBeamSourceFile;    
 };
 
 #endif
