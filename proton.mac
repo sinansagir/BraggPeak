@@ -1,0 +1,82 @@
+# proton.mac
+#
+/control/verbose 2
+/run/verbose 2
+/tracking/verbose 0
+/run/particle/verbose 1
+/run/particle/dumpList
+#
+# set geometry 
+/protonPB/det/setSizeX  4 cm
+/protonPB/det/setSizeYZ 4 cm
+/protonPB/det/setSliceSizeYZ 4 cm
+/protonPB/det/sliceNumber 50 
+#
+# define longitudinal scoring mesh
+# along the beam
+/score/create/boxMesh waterMeshlongitudinal
+/score/mesh/boxSize 2. 2. 2. cm
+/score/mesh/nBin 50 1 1
+/score/mesh/translate/xyz 0. 0. 0. cm
+/score/quantity/energyDeposit energyDeposit 
+/score/quantity/doseDeposit doseDeposit
+/score/close
+#
+# define lateral scoring mesh
+# centered at the Bragg peak
+/score/create/boxMesh waterMeshlateral
+/score/mesh/boxSize 0.1 2. 2. cm
+/score/mesh/nBin 1 1 50
+/score/mesh/translate/xyz 1.2 0. 0. cm
+/score/quantity/energyDeposit energyDeposit 
+/score/quantity/doseDeposit doseDeposit
+/score/close
+#
+# set physics process
+/protonPB/phys/addPhysics QGSP_BIC_EMY
+#/protonPB/phys/addPhysics emlivermore
+#/protonPB/phys/addPhysics empenelope
+#
+# production tresholds (recommended range 
+#cut off not bigger than 10% of slice thickness)
+/protonPB/phys/setCuts 0.2 mm
+#/protonPB/phys/setGCut 1 um
+#/protonPB/phys/setECut 1 um
+#/protonPB/phys/setPCut 1 um
+#
+# initialize
+/run/initialize
+#
+# visualisation
+#/control/execute visualisation.mac
+#
+/gun/particle proton
+# particle energy used in Clatterbridge Centre  
+/gun/energy 62 MeV
+#
+# beam size
+#/photonPB/gun/rndm 3 mm
+#
+# step limit (recommended not bigger than 5% of 
+# slice thickness)
+/protonPB/stepMax 0.1 mm
+#
+/protonPB/event/printModulo 50
+#
+# output file
+/analysis/setFileName Proton
+#
+# histogram 
+/analysis/h1/set 2 50 25 35 mm
+# number of events
+/run/beamOn 6000
+#
+# drawing projections
+#/score/drawProjection waterMeshlongitudinal doseDeposit
+#/score/drawProjection waterMeshlateral doseDeposit
+#
+# dump scores to a file
+/score/dumpQuantityToFile waterMeshlongitudinal doseDeposit DoseLongitudinalMesh.txt
+/score/dumpQuantityToFile waterMeshlongitudinal energyDeposit EnergyLongitudinalMesh.txt
+/score/dumpQuantityToFile waterMeshlateral doseDeposit DoseLateralMesh.txt
+/score/dumpQuantityToFile waterMeshlateral energyDeposit EnergyLateralMesh.txt
