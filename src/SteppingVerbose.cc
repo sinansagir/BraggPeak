@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example radioactivedecay/rdecay01/src/SteppingVerbose.cc
-
+   
 #include "SteppingVerbose.hh"
 #include "G4SteppingManager.hh"
 #include "G4ParticleTypes.hh"

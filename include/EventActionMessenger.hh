@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/include/EventActionMessenger.hh
-
+    
 #ifndef EventActionMessenger_h
 #define EventActionMessenger_h 1
 

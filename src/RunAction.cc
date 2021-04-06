@@ -24,17 +24,19 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/src/RunAction.cc
-
+  
 #include "RunAction.hh"
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
 #include "StepMax.hh"
 #include "PrimaryGeneratorAction.hh"
+
 #include "G4Run.hh"
 #include "G4RunManager.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4ios.hh"
+
 #include "Randomize.hh"
 
 RunAction::RunAction(DetectorConstruction* det, PhysicsList* phys,
@@ -65,7 +67,7 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
   fEdeptot = 0.;
   for (G4int j=0; j<MaxLayer; j++) fLayerEdep[j] = 0.;
   fKinematic->ResetEbeamCumul();
-  
+   
   if (fAnalysisManager->IsActive()) {
     fAnalysisManager->OpenFile(); 
     // histogram "1" is defined by the length of the target
@@ -85,22 +87,17 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     
   //run conditions 
   G4Material* material = fDetector->GetAbsorMaterial();
-  G4double density = material->GetDensity();  
-  G4String particle = fKinematic->GetParticleGun()->GetParticleDefinition()
-                      ->GetParticleName();   
-  G4double energy = fKinematic->GetParticleGun()->GetParticleEnergy(); 
+  G4double density = material->GetDensity();
          
   //compute number of primary steps
   G4double nstep = G4double(fNbPrimarySteps)/G4double(nbofEvents);
   G4cout << " Mean number of primary steps = "<< nstep << G4endl;
-     
-  G4cout << G4endl; 
 
   //dose in layers
   std::ofstream out;
   std::ofstream plot;
-
-  out.open("DoseFile.txt", std::ios::app); 
+  
+  out.open("DoseFile.txt", std::ios::app);
   plot.open("PlotDose.txt", std::ios::app); 
 
   G4int LayerNumber = fDetector->GetLayerNumber();
@@ -110,9 +107,9 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
   G4double MaxDose = 0;
  
   if (LayerNumber > 0) {
-    // Ebeam - incident proton energy
     G4double Ebeam = fKinematic->GetEbeamCumul();
-
+    G4float particleEnergy = int(Ebeam/nbofEvents+0.5);
+     
     // find the max dose
     for (G4int j=1; j <= LayerNumber; j++) {
       G4double Edep = fLayerEdep[j];
@@ -120,25 +117,25 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
       G4double Dose = Edep/LayerMass;
       if (Dose > MaxDose) MaxDose = Dose;} 
 
-    out << " Layers :\t x[mm]  \tEdep \tEdep/Ebeam[%] \tDose \tDose/MaxDose[%]" << G4endl;
+    out << " Layers \t x[mm]  \tEdep  \tEdep/Ebeam[%] \tDose \tDose/MaxDose[%]" << G4endl;
     for (G4int j=1; j <= LayerNumber; j++) {
       G4double Edep = fLayerEdep[j], ratio = 100*Edep/Ebeam;
       G4double LayerMass = fDetector->GetLayerMass();      
-      G4double Dose = Edep/LayerMass, ratiod = 100*Dose/MaxDose;
+      G4double Dose = Edep/LayerMass, ratiod = 100*Dose/MaxDose; 
       out << " layer " << j << ": \t"
              << tlength << "\t"
              << G4BestUnit(Edep,"Energy") << "\t"
-             << ratio << "\t"
-             << G4BestUnit(Dose,"Dose")   << "\t"
-             << ratiod << "\t" << G4endl;   
+             << std::setprecision(4) << ratio << "\t" 
+             << G4BestUnit(Dose,"Dose") << "\t"
+             << ratiod << "\t" << G4endl;
       plot << tlength << "\t"
            << ratiod << "\t" << G4endl;
       
       tlength += slength;
     }
     out << G4endl; 
-    out << "\n The run consists of " << nbofEvents << " "<< particle << " of "
-        << G4BestUnit(energy,"Energy") << " through " 
+    out << "\n The run consists of " << nbofEvents << " "<< " protons of "
+        << G4BestUnit(particleEnergy,"Energy") << " through " 
         << G4BestUnit(fDetector->GetAbsorSizeX(),"Length") << " of "
         << material->GetName() << " (density: " 
         << G4BestUnit(density,"Volumic Mass") << ")" << " divided into " 
@@ -151,6 +148,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     out << " Total energy deposit= "<< G4BestUnit(fEdeptot,"Energy") << G4endl;
     out << " Dose is the deposited dose in every slice." << G4endl;
     out << " MaxDose is the highest dose value from all slices." << G4endl;
+   
   } 
 
   out.close();
@@ -163,7 +161,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
       G4double fac = (mm/MeV)/(nbofEvents * binWidth);
       fAnalysisManager->ScaleH1(j, fac);
     }
- 
+    
     // save histograms
     fAnalysisManager->Write();
     fAnalysisManager->CloseFile();  
@@ -179,7 +177,7 @@ void RunAction::BookHisto()
 {
   // Create or get analysis manager
   fAnalysisManager = G4AnalysisManager::Instance();
-  fAnalysisManager->SetFileName("ProtonPB");
+  fAnalysisManager->SetFileName("ProtonGB");
   fAnalysisManager->SetVerboseLevel(1);
   fAnalysisManager->SetActivation(true);  // enable inactivation of histograms
 

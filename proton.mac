@@ -7,10 +7,10 @@
 /run/particle/dumpList
 #
 # set geometry 
-/protonPB/det/setSizeX  4 cm
-/protonPB/det/setSizeYZ 4 cm
-/protonPB/det/setSliceSizeYZ 4 cm
-/protonPB/det/sliceNumber 50 
+/protonGB/det/setSizeX  4 cm
+/protonGB/det/setSizeYZ 4 cm
+/protonGB/det/setSliceSizeYZ 4 cm
+/protonGB/det/sliceNumber 50 
 #
 # define longitudinal scoring mesh
 # along the beam
@@ -33,16 +33,16 @@
 /score/close
 #
 # set physics process
-/protonPB/phys/addPhysics QGSP_BIC_EMY
-#/protonPB/phys/addPhysics emlivermore
-#/protonPB/phys/addPhysics empenelope
+/protonGB/phys/addPhysics QGSP_BIC_EMY
+#/protonGB/phys/addPhysics emlivermore
+#/protonGB/phys/addPhysics empenelope
 #
 # production tresholds (recommended range 
 #cut off not bigger than 10% of slice thickness)
-/protonPB/phys/setCuts 0.2 mm
-#/protonPB/phys/setGCut 1 um
-#/protonPB/phys/setECut 1 um
-#/protonPB/phys/setPCut 1 um
+/protonGB/phys/setCuts 0.2 mm
+#/protonGB/phys/setGCut 1 um
+#/protonGB/phys/setECut 1 um
+#/protonGB/phys/setPCut 1 um
 #
 # initialize
 /run/initialize
@@ -50,23 +50,40 @@
 # visualisation
 #/control/execute visualisation.mac
 #
-/gun/particle proton
-# particle energy used in Clatterbridge Centre  
-/gun/energy 62 MeV
+# General particle source
+# proton circle source  
+/gps/pos/shape Circle
+/gps/pos/centre -2. 0. 0. cm
+/gps/pos/radius 0. mm
+/gps/pos/sigma_r 2. mm
+/gps/particle proton
+/gps/pos/type Beam
 #
-# beam size
-#/photonPB/gun/rndm 3 mm
+# the incident surface is in the y-z plane
+/gps/pos/rot1 0 1 0
+/gps/pos/rot2 0 0 1
+#
+# the beam is travelling along the x-axis without any angular 
+#dispersion (angular despersion set to 0.0)
+/gps/ang/rot1 0 0 1
+/gps/ang/rot2 0 1 0 
+/gps/ang/type beam1d 
+/gps/ang/sigma_r 0. deg
+#
+# the beam energy is in gaussian profile
+/gps/ene/type Gauss
+/gps/ene/mono 62 MeV
+/gps/ene/sigma 0.3 MeV
 #
 # step limit (recommended not bigger than 5% of 
 # slice thickness)
-/protonPB/stepMax 0.1 mm
+/protonGB/stepMax 0.1 mm
 #
-/protonPB/event/printModulo 50
+/protonGB/event/printModulo 50
 #
 # output file
 /analysis/setFileName Proton
-#
-# histogram 
+# 
 /analysis/h1/set 2 50 25 35 mm
 # number of events
 /run/beamOn 6000
@@ -74,7 +91,7 @@
 # drawing projections
 #/score/drawProjection waterMeshlongitudinal doseDeposit
 #/score/drawProjection waterMeshlateral doseDeposit
-#
+
 # dump scores to a file
 /score/dumpQuantityToFile waterMeshlongitudinal doseDeposit DoseLongitudinalMesh.txt
 /score/dumpQuantityToFile waterMeshlongitudinal energyDeposit EnergyLongitudinalMesh.txt

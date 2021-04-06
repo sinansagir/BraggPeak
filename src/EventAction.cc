@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/src/EventAction.cc
-
+   
 #include "EventAction.hh"
 #include "EventActionMessenger.hh"
 #include "G4Event.hh"

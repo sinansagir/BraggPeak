@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/include/DetectorMessenger.hh
-
+   
 #ifndef DetectorMessenger_h
 #define DetectorMessenger_h 1
 
