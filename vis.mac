@@ -1,8 +1,26 @@
-# vis.mac
-# visualisation
-# create .prim files suitable for   
+# Macro file for the visualization setting in the initialization phase 
+# when running in interactive mode
+#
+
+# Use these open statements to open selected visualization
+#
+# Use this open statement to create an OpenGL view:
+/vis/open OGL 600x600-0+0
+#
+# Use this open statement to create an OpenInventor view:
+#/vis/open OI
+#
+# Use this open statement to create a .prim file suitable for
 # viewing in DAWN:
-/vis/open DAWNFILE
+#/vis/open DAWNFILE
+#
+# Use this open statement to create a .heprep file suitable for
+# viewing in HepRApp:
+#/vis/open HepRepFile
+#
+# Use this open statement to create a .wrl file suitable for
+# viewing in a VRML viewer:
+#/vis/open VRML2FILE
 #
 # disable auto refresh and quieten vis messages whilst scene and
 # trajectories are established
@@ -57,7 +75,3 @@
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings
-
-
-
-

@@ -52,7 +52,8 @@ target_link_libraries(protonPB ${Geant4_LIBRARIES};${ROOT_LIBRARIES})
 #
 set(protonPB_SCRIPTS
   proton.mac
-  visualisation.mac
+  init_vis.mac
+  vis.mac
   )
 
 foreach(_script ${protonPB_SCRIPTS})
@@ -62,12 +63,6 @@ foreach(_script ${protonPB_SCRIPTS})
     COPYONLY
     )
 endforeach()
-
-#----------------------------------------------------------------------------
-# For internal Geant4 use - but has no effect if you build this
-# example standalone
-#
-# add_custom_target(B1 DEPENDS exampleB1)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
