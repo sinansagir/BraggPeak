@@ -52,6 +52,7 @@ target_link_libraries(protonPIC ${Geant4_LIBRARIES};${ROOT_LIBRARIES})
 #
 set(protonPIC_SCRIPTS
   proton.mac
+  proton_idle.mac
   init_vis.mac
   vis.mac
   )

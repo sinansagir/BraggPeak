@@ -1,6 +1,7 @@
 # Macro file for protonPIC
 # 
-# Run in batch, without graphic
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute proton_idle.mac
 #
 /control/verbose 2
 /run/verbose 2
@@ -13,6 +14,7 @@
 /protonPIC/det/setSizeYZ 4 cm
 /protonPIC/det/setSliceSizeYZ 4 cm
 /protonPIC/det/sliceNumber 50 
+/protonPIC/det/update
 #
 # define longitudinal scoring mesh
 # along the beam
@@ -35,7 +37,7 @@
 /score/close
 #
 # set physics process
-/protonPIC/phys/addPhysics QGSP_BIC_EMY
+#/protonPIC/phys/addPhysics QGSP_BIC_EMY
 #/protonPIC/phys/addPhysics emlivermore
 #/protonPIC/phys/addPhysics empenelope
 #
@@ -50,7 +52,7 @@
 /run/initialize
 #
 # visualisation
-#/control/execute vis.mac
+/control/execute vis.mac
 #
 /gun/particle proton
 # particle energy used in Clatterbridge Centre  
@@ -74,15 +76,15 @@
 # histogram 
 /analysis/h1/set 2 50 25 35 mm
 # number of events
-/run/beamOn 5000
+/run/beamOn 1
 #
 # drawing projections
-#/score/drawProjection waterMeshlongitudinal doseDeposit
-#/score/drawProjection waterMeshlateral doseDeposit
+/score/drawProjection waterMeshlongitudinal doseDeposit
+/score/drawProjection waterMeshlateral doseDeposit
 #/control/shell sleep 10
 #
 # dump scores to a file
-/score/dumpQuantityToFile waterMeshlongitudinal doseDeposit DoseLongitudinalMesh.txt
-/score/dumpQuantityToFile waterMeshlongitudinal energyDeposit EnergyLongitudinalMesh.txt
-/score/dumpQuantityToFile waterMeshlateral doseDeposit DoseLateralMesh.txt
-/score/dumpQuantityToFile waterMeshlateral energyDeposit EnergyLateralMesh.txt
+#/score/dumpQuantityToFile waterMeshlongitudinal doseDeposit DoseLongitudinalMesh.txt
+#/score/dumpQuantityToFile waterMeshlongitudinal energyDeposit EnergyLongitudinalMesh.txt
+#/score/dumpQuantityToFile waterMeshlateral doseDeposit DoseLateralMesh.txt
+#/score/dumpQuantityToFile waterMeshlateral energyDeposit EnergyLateralMesh.txt
