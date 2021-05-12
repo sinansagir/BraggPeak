@@ -48,6 +48,9 @@ class PrimaryGeneratorMessenger: public G4UImessenger
     PrimaryGeneratorAction*    fAction;
     G4UIdirectory*             fGunDir;         
     G4UIcmdWithADoubleAndUnit* fRndmCmd;
+    G4UIcmdWithADoubleAndUnit* fPosX0Cmd;
+    G4UIcmdWithADoubleAndUnit* fPosY0Cmd;
+    G4UIcmdWithADoubleAndUnit* fPosZ0Cmd;
     G4UIcmdWithAString*        fInputFileCmd;
 };
 

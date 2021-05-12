@@ -51,6 +51,9 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
   public:  
     void SetRndmBeam(G4double val)  {fRndmBeam = val;} 
+    void SetInitPosXBeam(G4double val)  {fInitPosX = val;} 
+    void SetInitPosYBeam(G4double val)  {fInitPosY = val;} 
+    void SetInitPosZBeam(G4double val)  {fInitPosZ = val;} 
     void SetInputFile(G4String file)  {fInputFile = file;}  
     virtual void GeneratePrimaries(G4Event*);
     virtual void ReadPICinput();
@@ -67,6 +70,9 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4ParticleGun*             fParticleGun;
     DetectorConstruction*      fDetector;
     G4double                   fRndmBeam;
+    G4double                   fInitPosX;
+    G4double                   fInitPosY;
+    G4double                   fInitPosZ;
     G4String                   fInputFile;
     G4double                   fEbeamCumul;       
     PrimaryGeneratorMessenger* fGunMessenger;

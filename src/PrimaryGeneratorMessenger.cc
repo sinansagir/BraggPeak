@@ -36,6 +36,9 @@ PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
 :G4UImessenger(),fAction(Gun),
  fGunDir(0),         
  fRndmCmd(0),
+ fPosX0Cmd(0),
+ fPosY0Cmd(0),
+ fPosZ0Cmd(0),
  fInputFileCmd(0)
 { 
   fGunDir = new G4UIdirectory("/protonPIC/gun/");
@@ -48,6 +51,24 @@ PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
   fRndmCmd->SetUnitCategory("Length");
   fRndmCmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
 
+  fPosX0Cmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/initPosX",this);
+  fPosX0Cmd->SetGuidance("initial x0 position of the beam");
+  fPosX0Cmd->SetParameterName("x0Beam",false);
+  fPosX0Cmd->SetUnitCategory("Length");
+  fPosX0Cmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
+
+  fPosY0Cmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/initPosY",this);
+  fPosY0Cmd->SetGuidance("initial y0 position of the beam");
+  fPosY0Cmd->SetParameterName("y0Beam",false);
+  fPosY0Cmd->SetUnitCategory("Length");
+  fPosY0Cmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
+
+  fPosZ0Cmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/initPosZ",this);
+  fPosZ0Cmd->SetGuidance("initial z0 position of the beam");
+  fPosZ0Cmd->SetParameterName("z0Beam",false);
+  fPosZ0Cmd->SetUnitCategory("Length");
+  fPosZ0Cmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
+  
   fInputFileCmd = new G4UIcmdWithAString("/protonPIC/gun/input",this);
   fInputFileCmd->SetGuidance("input root file for the beam");
   fInputFileCmd->SetParameterName("input",false);
@@ -56,6 +77,9 @@ PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
 PrimaryGeneratorMessenger::~PrimaryGeneratorMessenger()
 {
   delete fInputFileCmd;
+  delete fPosZ0Cmd;
+  delete fPosY0Cmd;
+  delete fPosX0Cmd;
   delete fRndmCmd;
   delete fGunDir;
 }
@@ -65,6 +89,12 @@ void PrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,
 { 
   if (command == fRndmCmd)
    {fAction->SetRndmBeam(fRndmCmd->GetNewDoubleValue(newValue));}   
+  if (command == fPosX0Cmd)
+   {fAction->SetInitPosXBeam(fPosX0Cmd->GetNewDoubleValue(newValue));}   
+  if (command == fPosY0Cmd)
+   {fAction->SetInitPosYBeam(fPosY0Cmd->GetNewDoubleValue(newValue));}   
+  if (command == fPosZ0Cmd)
+   {fAction->SetInitPosZBeam(fPosZ0Cmd->GetNewDoubleValue(newValue));}   
   if (command == fInputFileCmd)
    {fAction->SetInputFile(newValue);} 
 }

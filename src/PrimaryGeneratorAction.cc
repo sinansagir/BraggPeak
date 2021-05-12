@@ -40,6 +40,9 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(DetectorConstruction* det)
  fParticleGun(0),
  fDetector(det),
  fRndmBeam(0),
+ fInitPosX(0),
+ fInitPosY(0),
+ fInitPosZ(0),
  fInputFile(),
  fEbeamCumul(0),       
  fGunMessenger(0)
@@ -89,8 +92,19 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   if (!dataLoaded) PrimaryGeneratorAction::ReadPICinput(); //Read input beam data if it is not already loaded!
 
   //Initial particle position
-  G4double x0 = -0.5*(fDetector->GetAbsorSizeX());
-  G4double y0 = 0.*cm, z0 = 0.*cm;
+  //G4double x0 = -0.5*(fDetector->GetAbsorSizeX());
+  //G4double y0 = 0.*cm, z0 = 0.*cm;
+  G4double x0 = fInitPosX, y0 = fInitPosY, z0 = fInitPosZ;
+  
+  //randomize the beam, if requested.
+  if (fRndmBeam > 0.) 
+    {
+      if (fRndmBeam > fDetector->GetAbsorSizeYZ())
+        fRndmBeam = fDetector->GetAbsorSizeYZ(); 
+      G4double rbeam = 0.5*fRndmBeam;
+      y0 = (2*G4UniformRand()-1.)*rbeam;
+      z0 = (2*G4UniformRand()-1.)*rbeam;
+    }
 
   // Draw a proton from the input file with its kinetic energy, momentum, and normalized weight
   TRandom3 rand(0);
@@ -117,7 +131,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticleMomentumDirection(parVec);
   fParticleGun->SetParticleEnergy(ke * MeV);
   fParticleGun->GeneratePrimaryVertex(anEvent);
-  //fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0)); 
+  fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
   
   //DEBUG:
   //std::cout<<"Coin:"<<coin;
@@ -127,6 +141,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   //std::cout<<", pz:"<<parVec.z()<<std::endl;
   //std::cout<<"Nparticles:"<<fParticleGun->GetNumberOfParticles()<<std::endl;
   //std::cout<<"Momentum:"<<fParticleGun->GetParticleMomentum()<<std::endl;
+  //std::cout<<"Initial Position:"<<fParticleGun->GetParticlePosition()<<std::endl;
     
   fEbeamCumul += fParticleGun->GetParticleEnergy(); 
 }

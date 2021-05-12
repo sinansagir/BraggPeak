@@ -62,7 +62,12 @@
 /protonPIC/gun/input /home/ssagir/Data/Geant4input_QED_L_7um_proton_19.root
 #
 # beam size
-#/photonPIC/gun/rndm 3 mm
+#/protonPIC/gun/rndm 3 mm
+#
+# beam initial position
+/protonPIC/gun/initPosX -2 cm
+/protonPIC/gun/initPosY 0 cm
+/protonPIC/gun/initPosZ 0 cm
 #
 # step limit (recommended not bigger than 5% of 
 # slice thickness)
