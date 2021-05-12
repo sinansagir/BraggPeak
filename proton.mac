@@ -54,6 +54,9 @@
 # particle energy used in Clatterbridge Centre  
 /gun/energy 62 MeV
 #
+# input file
+/protonPIC/gun/input /home/ssagir/Data/Geant4input_QED_L_7um_proton_19.root
+#
 # beam size
 #/photonPB/gun/rndm 3 mm
 #
@@ -69,7 +72,7 @@
 # histogram 
 /analysis/h1/set 2 50 25 35 mm
 # number of events
-/run/beamOn 6000
+/run/beamOn 5000
 #
 # drawing projections
 #/score/drawProjection waterMeshlongitudinal doseDeposit
