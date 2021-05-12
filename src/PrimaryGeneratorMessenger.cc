@@ -29,12 +29,14 @@
 #include "PrimaryGeneratorAction.hh"
 #include "G4UIdirectory.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIcmdWithAString.hh"
 
 PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
                                                    PrimaryGeneratorAction* Gun)
 :G4UImessenger(),fAction(Gun),
  fGunDir(0),         
- fRndmCmd(0)
+ fRndmCmd(0),
+ fInputFileCmd(0)
 { 
   fGunDir = new G4UIdirectory("/protonPIC/gun/");
   fGunDir->SetGuidance("gun control");
@@ -45,10 +47,15 @@ PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
   fRndmCmd->SetRange("rBeam>=0.");
   fRndmCmd->SetUnitCategory("Length");
   fRndmCmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
+
+  fInputFileCmd = new G4UIcmdWithAString("/protonPIC/gun/input",this);
+  fInputFileCmd->SetGuidance("input root file for the beam");
+  fInputFileCmd->SetParameterName("input",false);
 }
 
 PrimaryGeneratorMessenger::~PrimaryGeneratorMessenger()
 {
+  delete fInputFileCmd;
   delete fRndmCmd;
   delete fGunDir;
 }
@@ -58,6 +65,9 @@ void PrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,
 { 
   if (command == fRndmCmd)
    {fAction->SetRndmBeam(fRndmCmd->GetNewDoubleValue(newValue));}   
+  if (command == fInputFileCmd)
+   {fAction->SetInputFile(newValue);} 
 }
+
 
 

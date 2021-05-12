@@ -160,7 +160,9 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     // normalize histograms  
     for (G4int j=1; j<3; j++) {  
       G4double binWidth = fAnalysisManager->GetH1Width(j);
+      //std::cout<<"nbofEvents:"<<nbofEvents<<",binWidth:"<<binWidth<<",mm:"<<mm<<",MeV:"<<MeV;
       G4double fac = (mm/MeV)/(nbofEvents * binWidth);
+      //std::cout<<",fac:"<<fac<<std::endl;
       fAnalysisManager->ScaleH1(j, fac);
     }
  
@@ -179,7 +181,7 @@ void RunAction::BookHisto()
 {
   // Create or get analysis manager
   fAnalysisManager = G4AnalysisManager::Instance();
-  fAnalysisManager->SetFileName("ProtonPB");
+  fAnalysisManager->SetFileName("ProtonPIC");
   fAnalysisManager->SetVerboseLevel(1);
   fAnalysisManager->SetActivation(true);  // enable inactivation of histograms
 

@@ -34,6 +34,7 @@
 class PrimaryGeneratorAction;
 class G4UIdirectory;
 class G4UIcmdWithADoubleAndUnit;
+class G4UIcmdWithAString;
 
 class PrimaryGeneratorMessenger: public G4UImessenger
 {
@@ -47,6 +48,7 @@ class PrimaryGeneratorMessenger: public G4UImessenger
     PrimaryGeneratorAction*    fAction;
     G4UIdirectory*             fGunDir;         
     G4UIcmdWithADoubleAndUnit* fRndmCmd;
+    G4UIcmdWithAString*        fInputFileCmd;
 };
 
 #endif
