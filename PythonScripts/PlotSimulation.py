@@ -6,10 +6,13 @@ from array import array
 rt.gROOT.SetBatch(1)
 rt.gStyle.SetOptStat(0)
 
-laserTarget = 'Plasma_Target' # Plasma_Target veya Solid_Target
-beamPos = 'bp-1p5cm' # bp0cm, bp-1p5cm, bp-5cm veya bp-10cm
+laserTarget = 'Solid_Target' # Plasma_Target veya Solid_Target
+beamPos = 'bp-5cm' # bp0cm, bp-1p5cm, bp-5cm veya bp-10cm
 laserInt = '5e23' # 5e21, 5e22, 1e23 veya 5e23
-EkRange = '145-150'
+EkRange = '1100-1150'
+# EkRange = '1500-1550'
+# EkRange = '0-3000'
+nBeam = '1k'
 
 try: 
 	opts, args = getopt.getopt(sys.argv[1:], "", ["laserTarget=",
@@ -31,31 +34,25 @@ for opt, arg in opts:
 
 doseFiles = {
 
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m1_p11_Ek'+EkRange:[rt.kBlue,'HP m1'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m2_p11_Ek'+EkRange:[rt.kBlack,'HP m2'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m3_p11_Ek'+EkRange:[rt.kMagenta,'HP m3'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m4_p11_Ek'+EkRange:[rt.kCyan,'HP m4'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_LP_p11_Ek'+EkRange:[rt.kRed,'LP'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_CP_p11_Ek'+EkRange:[rt.kOrange,'CP'],
-
-# 'Solid_Target/tboxVard_bp-1p5cm_bOn50k/i5e23_LP_p11_Ek145-150':[rt.kRed,'LP Ek145-150'],
-# 'Solid_Target/tboxVard_bp-1p5cm_bOn50k/i5e23_LP_p11_Ek200-205':[rt.kOrange,'LP Ek200-205'],
-# 'Solid_Target/tboxVard_bp-1p5cm_bOn50k/i5e23_LP_p11_Ek245-250':[rt.kCyan,'LP Ek245-250'],
+laserTarget+'/tboxVard_'+beamPos+'_bOn'+nBeam+'/icarbon_'+laserInt+'_LP_p11_Ek'+EkRange:[rt.kRed,'LP'],
+laserTarget+'/tboxVard_'+beamPos+'_bOn'+nBeam+'/icarbon_'+laserInt+'_CP_p11_Ek'+EkRange:[rt.kOrange,'CP'],
+# '../../ProtonPIC_build/results_SonRapor/'+laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_LP_p11_Ek55-60':[rt.kBlue,'LP-proton'],
+# '../../ProtonPIC_build/results_SonRapor/'+laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_CP_p11_Ek55-60':[rt.kBlack,'CP-proton'],
 
 }
-saveStr='_'+laserInt+'_Ek'+EkRange+'_tboxVard_'+beamPos+'_bOn50k'
+saveStr='_'+laserInt+'_Ek'+EkRange+'_tboxVard_'+beamPos+'_bOn'+nBeam#+'_C12p'
 xmin=0
 xmax=400
 if EkRange=='0-1000' and laserTarget=='Plasma_Target': xmax=100
-textBox = '#splitline{#splitline{I = '+laserInt.split('e')[0]+'#times10^{'+laserInt.split('e')[1]+'}}{Beam @ x='+beamPos.replace('bp','').replace('p','.')+'}}{E_{p} = '+EkRange+' MeV}'
+textBox = '#splitline{#splitline{I = '+laserInt.split('e')[0]+'#times10^{'+laserInt.split('e')[1]+'}}{Beam @ x='+beamPos.replace('bp','').replace('p','.')+'}}{E_{^{12}C} = '+EkRange+' MeV}'
 setLogyEdepMM = False
 setLogyBragg = False
 setLogyEdep = False
 setLogyEdepfrac = False
 setLogyDose = False
 setLogyDosefrac = False
-if EkRange=='0-1000':
-	textBox = textBox.replace('E_{p} = 0-1000 MeV','')
+if EkRange=='0-3000':
+	textBox = textBox.replace('E_{^{12}C} = 0-3000 MeV','')
 	setLogyEdepMM = True
 	setLogyBragg = True
 	setLogyEdep = True
@@ -68,6 +65,7 @@ EdepUnits = {#Scaling to MeV
 'MeV':1.,
 'GeV':1.e3,
 'TeV':1.e6,
+'PeV':1.e9,
 }
 
 RFiles = {}
@@ -79,11 +77,18 @@ hDose = {}
 hDosefrac = {}
 for dFile in doseFiles.keys():
 	try: 
-		RFiles[dFile] = rt.TFile(dFile+'/Proton.root')
+		RFiles[dFile] = rt.TFile(dFile+'/Carbon.root')
 		hEdepMM[dFile] = RFiles[dFile].Get('1').Clone(dFile)
 		hBragg[dFile] = RFiles[dFile].Get('2').Clone(dFile)
 	except:
-		print dFile+'/Proton.root does not exist! Skipping...'
+		print dFile+'/Carbon.root does not exist! Skipping...'
+# 		try: 
+# 			RFiles[dFile] = rt.TFile(dFile+'/Proton.root')
+# 			hEdepMM[dFile] = RFiles[dFile].Get('1').Clone(dFile)
+# 			hBragg[dFile] = RFiles[dFile].Get('2').Clone(dFile)
+# 		except:
+# 			print dFile+'/Proton.root does not exist! Skipping...'
+# 			continue
 		continue
 
 	with open(dFile+'/DoseFile.txt',"r") as f:

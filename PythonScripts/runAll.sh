@@ -1,19 +1,20 @@
 #!/bin/bash
 
-geantPath=/home/ssagir/Simulation/BraggPeak/ProtonPIC_build/
-theConf=Plasma_Target/tboxVard_bp-5cm_bOn50k
+geantPath=/home/ssagir/Simulation/BraggPeak/CarbonPIC_build/
+theConf=Solid_Target/tboxVard_bp0cm_bOn50k
 theDirs=`find $theConf -type d`
 for thepath in $theDirs;
 do
-if [[ "$thepath" = *"i5e23_"*"_p11_Ek55-60"* ]]; then
-# if [[ "$thepath" = *"i5e23_"*"_p11_Ek25-30"* || "$thepath" = *"i5e23_"*"_p11_Ek35-40"* || "$thepath" = *"i5e23_"*"_p11_Ek55-60"* || "$thepath" = *"i5e23_"*"_p11_Ek75-80"* ]]; then
-	if test -f "${thepath}/proton.mac"; then
+if [[ "$thepath" = *"FORDUMMIES"* ]]; then
+# if [[ "$thepath" = *"5e23_"*"_p11_Ek2100-2150"* ]]; then
+# if [[ "$thepath" = *"5e23_"*"_p11_Ek1100-1150"* || "$thepath" = *"5e23_"*"_p11_Ek0-3000"* ]]; then
+	if test -f "${thepath}/carbon.mac"; then
 		cd ${thepath}
 		rm *.txt *.root run.out
-		${geantPath}/protonPIC proton.mac >& run.out &
+		${geantPath}/carbonPIC carbon.mac >& run.out &
 		cd -
 	else
-		echo "${thepath}/proton.mac does not exists!"
+		echo "${thepath}/carbon.mac does not exists!"
 	fi
 fi
 done

@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 // This is the modified version of the example electromagnetic/TestEm7/TestEm7.cc
-// This code simulates proton beam with realistic geometry incident on water cube.     
+// This code simulates carbon beam with realistic geometry incident on water cube.     
 
 #include "G4RunManager.hh"
 #include "G4RunManagerFactory.hh"

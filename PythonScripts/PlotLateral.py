@@ -7,10 +7,13 @@ from array import array
 rt.gROOT.SetBatch(1)
 rt.gStyle.SetOptStat(0)
 
-laserTarget = 'Plasma_Target' # Plasma_Target veya Solid_Target
-beamPos = 'bp-1p5cm' # bp0cm, bp-1p5cm, bp-5cm veya bp-10cm
+laserTarget = 'Solid_Target' # Plasma_Target veya Solid_Target
+beamPos = 'bp0cm' # bp0cm, bp-1p5cm, bp-5cm veya bp-10cm
 laserInt = '5e23' # 5e21, 5e22, 1e23 veya 5e23
-EkRange = '145-150'
+EkRange = '1100-1150'
+EkRange = '1500-1550'
+# EkRange = '0-3000'
+nBeam = '1k'
 
 try: 
 	opts, args = getopt.getopt(sys.argv[1:], "", ["laserTarget=",
@@ -32,18 +35,14 @@ for opt, arg in opts:
 
 doseFiles = {
 
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m1_p11_Ek'+EkRange:[rt.kBlue,'HP m1'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m2_p11_Ek'+EkRange:[rt.kBlack,'HP m2'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m3_p11_Ek'+EkRange:[rt.kMagenta,'HP m3'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m4_p11_Ek'+EkRange:[rt.kCyan,'HP m4'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_LP_p11_Ek'+EkRange:[rt.kRed,'LP'],
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_CP_p11_Ek'+EkRange:[rt.kOrange,'CP'],
+laserTarget+'/tboxVard_'+beamPos+'_bOn'+nBeam+'/icarbon_'+laserInt+'_LP_p11_Ek'+EkRange:[rt.kRed,'LP'],
+laserTarget+'/tboxVard_'+beamPos+'_bOn'+nBeam+'/icarbon_'+laserInt+'_CP_p11_Ek'+EkRange:[rt.kOrange,'CP'],
 
 }
-saveStr='_'+laserInt+'_Ek'+EkRange+'_tboxVard_'+beamPos+'_bOn50k'
+saveStr='_'+laserInt+'_Ek'+EkRange+'_tboxVard_'+beamPos+'_bOn'+nBeam
 xmin=0
 xmax=50
-textBox = '#splitline{#splitline{I = '+laserInt.split('e')[0]+'#times10^{'+laserInt.split('e')[1]+'}}{Beam @ x='+beamPos.replace('bp','').replace('p','.')+'}}{E_{p} = '+EkRange+' MeV}'
+textBox = '#splitline{#splitline{I = '+laserInt.split('e')[0]+'#times10^{'+laserInt.split('e')[1]+'}}{Beam @ x='+beamPos.replace('bp','').replace('p','.')+'}}{E_{^{12}C} = '+EkRange+' MeV}'
 setLogyTotal = False
 setLogyTotal2 = False
 setLogyEntry = False

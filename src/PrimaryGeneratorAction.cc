@@ -31,6 +31,7 @@
 #include "G4Event.hh"
 #include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
+#include "G4IonTable.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
@@ -127,6 +128,14 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   //auto parVec = G4ThreeVector(1, 0, 0).unit();
   //ke = 62
 
+  //Set definition of ION beam for C12:
+  G4int Z = 6;
+  G4int A = 12;
+  G4double ionCharge = 0;
+  G4double excitEnergy = 0*keV;  
+  G4ParticleDefinition* ion = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
+  fParticleGun->SetParticleDefinition(ion);
+  fParticleGun->SetParticleCharge(ionCharge);
   fParticleGun->SetNumberOfParticles(np);
   fParticleGun->SetParticleMomentumDirection(parVec);
   fParticleGun->SetParticleEnergy(ke * MeV);

@@ -41,35 +41,35 @@ PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(
  fPosZ0Cmd(0),
  fInputFileCmd(0)
 { 
-  fGunDir = new G4UIdirectory("/protonPIC/gun/");
+  fGunDir = new G4UIdirectory("/carbonPIC/gun/");
   fGunDir->SetGuidance("gun control");
 
-  fRndmCmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/rndm",this);
+  fRndmCmd = new G4UIcmdWithADoubleAndUnit("/carbonPIC/gun/rndm",this);
   fRndmCmd->SetGuidance("random lateral extension on the beam");
   fRndmCmd->SetParameterName("rBeam",false);
   fRndmCmd->SetRange("rBeam>=0.");
   fRndmCmd->SetUnitCategory("Length");
   fRndmCmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
 
-  fPosX0Cmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/initPosX",this);
+  fPosX0Cmd = new G4UIcmdWithADoubleAndUnit("/carbonPIC/gun/initPosX",this);
   fPosX0Cmd->SetGuidance("initial x0 position of the beam");
   fPosX0Cmd->SetParameterName("x0Beam",false);
   fPosX0Cmd->SetUnitCategory("Length");
   fPosX0Cmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
 
-  fPosY0Cmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/initPosY",this);
+  fPosY0Cmd = new G4UIcmdWithADoubleAndUnit("/carbonPIC/gun/initPosY",this);
   fPosY0Cmd->SetGuidance("initial y0 position of the beam");
   fPosY0Cmd->SetParameterName("y0Beam",false);
   fPosY0Cmd->SetUnitCategory("Length");
   fPosY0Cmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
 
-  fPosZ0Cmd = new G4UIcmdWithADoubleAndUnit("/protonPIC/gun/initPosZ",this);
+  fPosZ0Cmd = new G4UIcmdWithADoubleAndUnit("/carbonPIC/gun/initPosZ",this);
   fPosZ0Cmd->SetGuidance("initial z0 position of the beam");
   fPosZ0Cmd->SetParameterName("z0Beam",false);
   fPosZ0Cmd->SetUnitCategory("Length");
   fPosZ0Cmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
   
-  fInputFileCmd = new G4UIcmdWithAString("/protonPIC/gun/input",this);
+  fInputFileCmd = new G4UIcmdWithAString("/carbonPIC/gun/input",this);
   fInputFileCmd->SetGuidance("input root file for the beam");
   fInputFileCmd->SetParameterName("input",false);
 }

@@ -1,21 +1,12 @@
 #!/bin/bash
 
-for laserTarget in Plasma_Target Solid_Target;
+for laserTarget in Solid_Target;
 do
-for laserInt in 5e21 1e22 5e22 1e23 5e23;
+for laserInt in 5e23;
 do
-for beamPos in bp0cm bp-1p5cm bp-5cm bp-10cm;
+for beamPos in bp0cm bp-5cm;
 do
-if [[ "$laserInt" = "5e23" ]]; then
-	if [[ "$laserTarget" = "Solid_Target" ]]; then
-		EkRangeList=(55-60 95-100 145-150 200-205 245-250 0-1000)
-	else
-		EkRangeList=(25-30 35-40 55-60 75-80 95-100 115-120 0-1000)
-	fi
-else
-	EkRangeList=(0-1000)
-fi
-# EkRangeList=(25-30 35-40 55-60 75-80)
+EkRangeList=(1100-1150 1500-1550)
 for EkRange in ${EkRangeList[@]};
 do
     python PlotSimulation.py --laserTarget=$laserTarget --laserInt=$laserInt --EkRange=$EkRange --beamPos=$beamPos 

@@ -7,10 +7,14 @@ from array import array
 rt.gROOT.SetBatch(1)
 rt.gStyle.SetOptStat(0)
 
-laserTarget = 'Plasma_Target' # Plasma_Target veya Solid_Target
-beamPos = 'bp-1p5cm' # bp0cm, bp-1p5cm, bp-5cm veya bp-10cm
+laserTarget = 'Solid_Target' # Plasma_Target veya Solid_Target
+beamPos = 'bp-5cm' # bp0cm, bp-1p5cm, bp-5cm veya bp-10cm
 laserInt = '5e23' # 5e21, 5e22, 1e23 veya 5e23
-EkRange = '145-150'
+EkRange = '1100-1150'
+EkRange = '1500-1550'
+# EkRange = '1900-2000'
+# EkRange = '0-3000'
+nBeam = '1k'
 
 try: 
 	opts, args = getopt.getopt(sys.argv[1:], "", ["laserTarget=",
@@ -32,15 +36,11 @@ for opt, arg in opts:
 	
 doseFiles = [
 
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m1_p11_Ek'+EkRange,
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m2_p11_Ek'+EkRange,
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m3_p11_Ek'+EkRange,
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_m4_p11_Ek'+EkRange,
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_LP_p11_Ek'+EkRange,
-laserTarget+'/tboxVard_'+beamPos+'_bOn50k/i'+laserInt+'_CP_p11_Ek'+EkRange,
+laserTarget+'/tboxVard_'+beamPos+'_bOn'+nBeam+'/icarbon_'+laserInt+'_LP_p11_Ek'+EkRange,
+laserTarget+'/tboxVard_'+beamPos+'_bOn'+nBeam+'/icarbon_'+laserInt+'_CP_p11_Ek'+EkRange,
 
 ]
-textBox = '#splitline{#splitline{I = '+laserInt.split('e')[0]+'#times10^{'+laserInt.split('e')[1]+'}}{Beam @ x='+beamPos.replace('bp','').replace('p','.')+'}}{E_{p} = '+EkRange+' MeV}'
+textBox = '#splitline{#splitline{I = '+laserInt.split('e')[0]+'#times10^{'+laserInt.split('e')[1]+'}}{Beam @ x='+beamPos.replace('bp','').replace('p','.')+'}}{E_{^{12}C} = '+EkRange+' MeV}'
 setLogyTotal = False
 setLogyTotal2 = False
 setLogyEntry = False
@@ -63,9 +63,13 @@ hTotal = {}
 hTotal2 = {}
 hEntry = {}
 for dFile in doseFiles:
-	saveStr='_'+laserInt+'_Ek'+EkRange+'_tboxVard_'+beamPos+'_bOn50k_'+dFile.split('/')[-1].split('_')[-3]
-	with open(dFile+'/DoseLateralMesh3d.txt',"r") as f:
-		thelines = f.readlines()
+	saveStr='_'+laserInt+'_Ek'+EkRange+'_tboxVard_'+beamPos+'_bOn'+nBeam+'_'+dFile.split('/')[-1].split('_')[-3]
+	try:
+		with open(dFile+'/DoseLateralMesh3d.txt',"r") as f:
+			thelines = f.readlines()
+	except:
+		print dFile+'/Proton.root does not exist! Skipping...'
+		continue	
 	xmax = -1.
 	ymax = -1.
 	zmax = -1.
@@ -94,16 +98,14 @@ for dFile in doseFiles:
 		total[depthx_][depthy_][depthz_] = total_
 		total2[depthx_][depthy_][depthz_] = total2_
 		entry[depthx_][depthy_][depthz_] = entry_
-	xbins=array('d', depthx*0.75) # *0.75 is valid if 0.75mm slicing option is used in proton.mac!!
+	xbins=array('d', depthx*0.75) # *0.75 is valid if 0.75mm slicing option is used in carbon.mac!!
 	ybins=array('d', depthy*0.8-depthy[-1]*0.8/2) # *0.8 is valid if 0.8mm(=40./50) slicing option is used in proton.mac!!
 	zbins=array('d', depthz*0.8-depthz[-1]*0.8/2) # *0.8 is valid if 0.8mm(=40./50) slicing option is used in proton.mac!!
 
 	BraggX = 0.
 	Ekmax = float(dFile.split('Ek')[-1].split('-')[-1])
-	if Ekmax<=30: BraggX = 5.5
-	elif Ekmax<=40: BraggX = 11.
-	elif Ekmax<=50: BraggX = 14.
-	elif Ekmax<=60: BraggX = 25.
+	if Ekmax<=1150: BraggX = 21.
+	if Ekmax<=1550: BraggX = 36.
 	elif Ekmax<=70: BraggX = 30. #?
 	elif Ekmax<=80: BraggX = 46.
 	elif Ekmax<=90: BraggX = 50.4

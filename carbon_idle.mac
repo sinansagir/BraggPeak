@@ -1,7 +1,7 @@
-# Macro file for protonPIC
+# Macro file for carbonPIC
 # 
 # Can be run in batch, without graphic
-# or interactively: Idle> /control/execute proton_idle.mac
+# or interactively: Idle> /control/execute carbon_idle.mac
 #
 /control/verbose 2
 /run/verbose 2
@@ -10,11 +10,11 @@
 /run/particle/dumpList
 #
 # set geometry 
-/protonPIC/det/setSizeX  4 cm
-/protonPIC/det/setSizeYZ 4 cm
-/protonPIC/det/setSliceSizeYZ 4 cm
-/protonPIC/det/sliceNumber 50 
-/protonPIC/det/update
+/carbonPIC/det/setSizeX  4 cm
+/carbonPIC/det/setSizeYZ 4 cm
+/carbonPIC/det/setSliceSizeYZ 4 cm
+/carbonPIC/det/sliceNumber 50 
+/carbonPIC/det/update
 #
 # define longitudinal scoring mesh
 # along the beam
@@ -37,16 +37,16 @@
 /score/close
 #
 # set physics process
-#/protonPIC/phys/addPhysics QGSP_BIC_EMY
-#/protonPIC/phys/addPhysics emlivermore
-#/protonPIC/phys/addPhysics empenelope
+#/carbonPIC/phys/addPhysics QGSP_BIC_EMY
+#/carbonPIC/phys/addPhysics emlivermore
+#/carbonPIC/phys/addPhysics empenelope
 #
 # production tresholds (recommended range 
 #cut off not bigger than 10% of slice thickness)
-/protonPIC/phys/setCuts 0.2 mm
-#/protonPIC/phys/setGCut 1 um
-#/protonPIC/phys/setECut 1 um
-#/protonPIC/phys/setPCut 1 um
+/carbonPIC/phys/setCuts 0.2 mm
+#/carbonPIC/phys/setGCut 1 um
+#/carbonPIC/phys/setECut 1 um
+#/carbonPIC/phys/setPCut 1 um
 #
 # Initialize kernel
 /run/initialize
@@ -59,24 +59,24 @@
 /gun/energy 62 MeV
 #
 # input file
-/protonPIC/gun/input /home/ssagir/Data/Geant4input_QED_L_7um_proton_19.root
+/carbonPIC/gun/input /home/ssagir/Data/Geant4input_QED_L_7um_proton_19.root
 #
 # beam size
-#/protonPIC/gun/rndm 3 mm
+#/carbonPIC/gun/rndm 3 mm
 #
 # beam initial position
-/protonPIC/gun/initPosX -2 cm
-/protonPIC/gun/initPosY 0 cm
-/protonPIC/gun/initPosZ 0 cm
+/carbonPIC/gun/initPosX -2 cm
+/carbonPIC/gun/initPosY 0 cm
+/carbonPIC/gun/initPosZ 0 cm
 #
 # step limit (recommended not bigger than 5% of 
 # slice thickness)
-/protonPIC/stepMax 0.1 mm
+/carbonPIC/stepMax 0.1 mm
 #
-/protonPIC/event/printModulo 50
+/carbonPIC/event/printModulo 50
 #
 # output file
-/analysis/setFileName Proton
+/analysis/setFileName Carbon
 #
 # histogram 
 /analysis/h1/set 2 50 25 35 mm
